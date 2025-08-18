@@ -1,28 +1,27 @@
-# EcoCollect
+# EcoCollect (Work in Progress)
 
-**EcoCollect** is a web-based platform designed to streamline waste collection efficiently. Users can request waste pickups, agents manage collections in their assigned areas, and admins oversee the entire system.
+**EcoCollect** is a web-based platform to streamline waste collection. Users can request pickups, agents manage collections, and admins oversee the system.  
+**Note:** The project is currently under development and the codebase is partial.
 
-## 🌱 Features
-
+## 🌱 Features (Planned)
 ### User
 - Register and log in.
 - Request waste collection.
-- Track the status of requests.
+- Track request status.
 
 ### Agent
 - Log in using email.
-- View assigned collection requests.
+- View and manage assigned requests.
 - Update request status.
 
 ### Admin
 - Manage users, agents, and areas.
 - Assign areas to agents.
-- Monitor all requests and progress.
+- Monitor all requests.
 
 ## 💻 Tech Stack
 - **Frontend:** HTML, CSS, JavaScript
-- **Backend:** PHP
-- **Database:** MySQL
-- **Authentication:** Email-based login for users and agents
-- **Other:** CRUD operations, session management
+- **Backend:** PHP (Partial)
+- **Database:** MySQL (Partial)
+- **Authentication:** Email-based login
 
