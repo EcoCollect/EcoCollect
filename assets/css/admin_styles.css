@@ -1,0 +1,231 @@
+/* ================================
+   EcoCollect Admin Module CSS
+   Clean, structured, consistent
+   ================================ */
+
+/* ---------- COLOR VARIABLES ---------- */
+:root {
+    --green-light: #e8f5e9;
+    --green-primary: #66bb6a;
+    --green-dark: #388e3c;
+    --green-white: #ffffff;
+    --green-hover: #397d58;
+    --error-red: #f44336;
+    --success-green: #dff0d8;
+    --success-text: #3c763d;
+}
+
+/* ---------- BODY ---------- */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--green-light);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* ---------- LOGIN CONTAINER ---------- */
+.login_container {
+    width: 90%;
+    max-width: 400px;
+    background-color: var(--green-white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 20px;
+}
+
+.login_container h1 {
+    color: var(--green-dark);
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+/* ---------- FORM CONTAINER ---------- */
+.form_container {
+    width: 95%;
+    max-width: 500px;
+    background-color: var(--green-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 20px;
+}
+
+.form_container h1 {
+    font-size: 24px;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+}
+
+.form_container label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-weight: 500;
+}
+
+/* ---------- INPUT FIELDS ---------- */
+.input,
+.form_container input[type="text"],
+.form_container input[type="email"],
+.form_container input[type="date"],
+.form_container input[type="time"],
+.form_container input[type="password"],
+.form_container select,
+.form_container textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: var(--green-white);
+    box-sizing: border-box;
+}
+
+.input:focus,
+.form_container input:focus,
+.form_container select:focus,
+.form_container textarea:focus {
+    border: 1px solid var(--green-primary);
+    outline: none;
+}
+
+.form_container textarea {
+    resize: vertical;
+}
+
+/* ---------- BUTTONS ---------- */
+.green_btn,
+.dashboard_btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 8px 5px;
+    background-color: var(--green-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.green_btn:hover,
+.dashboard_btn:hover {
+    background-color: var(--green-hover);
+}
+
+.back_btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--green-white);
+    color: var(--green-primary);
+    border: 2px solid var(--green-primary);
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back_btn:hover {
+    background-color: var(--green-light);
+    color: var(--green-dark);
+}
+
+/* ---------- DASHBOARD CONTAINER ---------- */
+.dashboard_container {
+    width: 95%;
+    max-width: 600px;
+    background: var(--green-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 20px;
+}
+
+.dashboard_container h1 {
+    color: var(--green-dark);
+    margin-bottom: 20px;
+}
+
+/* ---------- TABLE STYLING ---------- */
+.admin_table_container {
+    width: 95%;
+    max-width: 1000px;
+    background-color: var(--green-white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.admin_table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.admin_table th,
+.admin_table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.admin_table th {
+    background-color: var(--green-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.admin_table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.admin_table tr:hover {
+    background-color: #f1f8e9;
+}
+
+/* ---------- ALERT MESSAGES ---------- */
+.success_msg {
+    background-color: var(--success-green);
+    color: var(--success-text);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.error_msg {
+    background-color: var(--error-red);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .admin_table th,
+    .admin_table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
