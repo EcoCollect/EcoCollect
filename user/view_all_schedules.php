@@ -46,6 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
 }
 ?>
 
+<?php include 'user_navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
     <link rel="stylesheet" href="../assets/css/user_styles.css">
 </head>
 <body>
-    <div class="schedule_container">
+    <div class="page_content" style="padding-top: 80px;">
+        <div class="schedule_container">
         <h2>View Area-wise Collection Schedule</h2>
 
         <form method="POST">
@@ -103,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
         <?php endif; ?>
 
         <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
+        </div>
     </div>
 </body>
 </html>

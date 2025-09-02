@@ -24,6 +24,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
+<?php include 'user_navbar.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,38 +33,41 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="../assets/css/user_styles.css">
 </head>
 <body>
-    <div class="schedule_container">
-        <h2 class="center_heading">Area-wise Collection Schedule</h2>
-        <table class="schedule_table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Waste Type</th>
-                    <th>Remarks</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['collection_date']); ?></td>
-                            <td><?= htmlspecialchars($row['collection_time']); ?></td>
-                            <td><?= htmlspecialchars($row['waste_type']); ?></td>
-                            <td><?= htmlspecialchars($row['remarks']); ?></td>
-                            <td><?= htmlspecialchars($row['status']); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
+
+    <div class="page_content" style="padding-top: 80px;">
+        <div class="schedule_container">
+            <h2 class="center_heading">Area-wise Collection Schedule</h2>
+            <table class="schedule_table">
+                <thead>
                     <tr>
-                        <td colspan="5">No schedules available for your area currently.</td>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Waste Type</th>
+                        <th>Remarks</th>
+                        <th>Status</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-            <a href="view_all_schedules.php" class="dashboard_btn">View All Area Schedules</a>
-            <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['collection_date']); ?></td>
+                                <td><?= htmlspecialchars($row['collection_time']); ?></td>
+                                <td><?= htmlspecialchars($row['waste_type']); ?></td>
+                                <td><?= htmlspecialchars($row['remarks']); ?></td>
+                                <td><?= htmlspecialchars($row['status']); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">No schedules available for your area currently.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+                <a href="view_all_schedules.php" class="dashboard_btn">View All Area Schedules</a>
+                <!-- <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a> -->
+        </div>
     </div>
 </body>
 </html>

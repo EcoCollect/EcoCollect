@@ -5,7 +5,7 @@ session_start();
 session_unset();
 session_destroy();
 
-// Redirect to home page of the project
-header("Location: http://localhost/ecocollect/");
+// Redirect to homepage
+header("Location: ../index.php");
 exit();
 ?>

@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
 </head>
 <body>
+<?php include('admin_navbar.php'); ?>
     <div class="container">
         <h2>Add New Agent</h2>
         <?php if ($message != "") echo "<p class='message'>$message</p>"; ?>

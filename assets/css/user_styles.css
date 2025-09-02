@@ -1,281 +1,286 @@
-/* ================================
-   EcoCollect User Module CSS
+/* =========================================
+   EcoCollect - User Module Styles
+   Fully Combined & Commented
    Covers:
-   ✅ Login & Registration
-   ✅ User Dashboard
-   ✅ Schedule Viewing
-   ================================ */
+   ✅ Navbar
+   ✅ Dashboard
+   ✅ Track Requests Table & Filters
+   ✅ Complaints & Forms
+   ✅ Status Badges
+   ✅ Responsive Enhancements
+   ========================================= */
 
-/* ========== Color Variables ========== */
+/* =========================
+   COLOR VARIABLES
+   ========================= */
 :root {
     --green-light: #e8f5e9;
     --green-primary: #66bb6a;
     --green-dark: #388e3c;
     --green-white: #ffffff;
+    --red-dark: #b71c1c;
+    --red-light: #d32f2f;
+    --orange: #fb8c00;
+    --blue: #1e88e5;
+    --gray-light: #f5f5f5;
+    --text-dark: #333;
 }
 
-/* ========== GENERAL LAYOUT ========== */
+/* =========================
+   GENERAL BODY & LAYOUT
+   ========================= */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--green-light);
-    color: #333;
     margin: 0;
-    padding: 0;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: var(--green-light);
+    color: var(--text-dark);
 }
 
-/* Optional utility for centering specific pages if needed */
-.center_container {
+.content-wrapper {
+    max-width: 1000px;
+    margin: 100px auto 30px auto; /* space for fixed navbar */
+    padding: 20px;
+}
+
+/* =========================
+   NAVBAR STYLING
+   ========================= */
+.navbar {
+    background: var(--green-dark);
+    padding: 12px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
-}
-
-/* ================================
-   LOGIN & REGISTRATION STYLES
-   ================================ */
-.login_container {
-    width: 90%;
-    max-width: 900px;
-    background-color: var(--green-white);
-    display: flex;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow: hidden;
-    margin: 40px auto;
-}
-
-.login_form_container {
-    display: flex;
-    flex-direction: row;
+    gap: 10px;
+    position: fixed;
+    top: 0;
     width: 100%;
+    z-index: 1000;
 }
 
-.left, .right {
-    flex: 1;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.left {
-    background-color: var(--green-white);
-}
-
-.right {
-    background-color: var(--green-primary);
-}
-
-.right h1 {
+.navbar a {
     color: var(--green-white);
-    font-size: 26px;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    background: #2e7d32;
+}
+
+.navbar a.active {
+    background: var(--green-primary);
+}
+
+/* =========================
+   DASHBOARD CONTAINER
+   ========================= */
+.dashboard-container {
+    max-width: 1100px;
+    margin: 100px auto 30px auto;
+    padding: 20px;
+    background: var(--green-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dashboard-container h2 {
+    color: var(--green-dark);
+    margin-bottom: 15px;
+    font-size: 24px;
     text-align: center;
 }
 
-.form_container {
-    width: 100%;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.dashboard-container p {
+    text-align: center;
+    color: #555;
 }
 
-.form_container h1 {
-    font-size: 24px;
+/* =========================
+   FORMS & TRACK CONTAINER
+   ========================= */
+.track-container,
+.form-container {
+    background: var(--green-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.track-container h2,
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
     color: var(--green-dark);
+}
+
+/* =========================
+   FILTER & FORM STYLING
+   ========================= */
+.filter-form,
+.form-container form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.input,
-select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
+.filter-form label,
+.form-container label {
+    font-weight: bold;
+}
+
+.filter-form input[type="date"],
+.filter-form select,
+.form-container textarea,
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="number"] {
+    padding: 8px 12px;
+    border-radius: 6px;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-    background-color: var(--green-white);
-    box-sizing: border-box;
-}
-
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 5 5-5H0z' fill='%2366bb6a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-    padding-right: 40px;
-}
-
-.input:focus,
-select:focus {
-    border: 1px solid var(--green-primary);
-    outline: none;
-}
-
-.error_msg {
-    width: 100%;
-    background-color: #f44336;
-    color: white;
-    padding: 10px;
-    border-radius: 6px;
-    text-align: center;
     font-size: 14px;
-    margin-bottom: 10px;
+    width: 100%;
+    max-width: 300px;
 }
 
-/* Buttons for forms */
-.green_btn,
-.white_btn {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
+/* =========================
+   BUTTONS
+   ========================= */
+.filter-form button,
+.form-container button,
+.reset-btn {
+    padding: 8px 16px;
     border: none;
     border-radius: 6px;
-    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
-.green_btn {
-    background-color: var(--green-primary);
-    color: white;
-}
-
-.green_btn:hover {
+.filter-form button,
+.form-container button {
     background-color: var(--green-dark);
+    color: var(--green-white);
 }
 
-.white_btn {
-    background-color: var(--green-white);
-    color: var(--green-primary);
+.filter-form button:hover,
+.form-container button:hover {
+    background-color: #2e7d32;
 }
 
-.white_btn:hover {
-    background-color: var(--green-light);
-    color: var(--green-dark);
-}
-
-/* ================================
-   USER DASHBOARD STYLES
-   ================================ */
-.dashboard_container {
-    background: #ffffff;
-    display: inline-block;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
-    margin: 40px auto;
-}
-
-.dashboard_container h1 {
-    color: #2e7d32;
-    margin-bottom: 30px;
-}
-
-.dashboard_btn {
-    display: inline-block;
-    padding: 12px 20px;
-    margin: 10px auto;
-    background-color: var(--green-primary);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-align: center;
+.reset-btn {
     text-decoration: none;
+    background-color: var(--red-light);
+    color: var(--green-white);
 }
 
-.dashboard_btn:hover {
-    background-color: var(--green-dark);
+.reset-btn:hover {
+    background-color: var(--red-dark);
 }
 
-/* ========== AREA-WISE SCHEDULE VIEWING ========== */
-
-/* Container */
-.schedule_container {
-    width: 95%;
-    max-width: 1000px;
-    background-color: var(--green-white);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow-x: auto;
-    margin: 40px auto;
-    text-align: center;
-}
-
-/* Center heading */
-.center_heading {
-    text-align: center;
-    font-size: 24px;
-    color: var(--green-dark);
-    margin-bottom: 20px;
-}
-
-/* Table */
-.schedule_table {
+/* =========================
+   REQUESTS TABLE STYLING
+   ========================= */
+.requests-table,
+.form-container table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0 auto 20px auto;
-    font-size: 16px;
+    margin-top: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
-.schedule_table th,
-.schedule_table td {
+.requests-table th,
+.requests-table td,
+.form-container th,
+.form-container td {
     border: 1px solid #ddd;
     padding: 12px 15px;
-    text-align: center;
-    word-break: break-word;
+    text-align: center;        /* horizontal centering */
+    vertical-align: middle;    /* vertical centering */
+    font-size: 14px;
+    white-space: nowrap;       /* prevents wrapping in IDs/status */
 }
 
-.schedule_table th {
-    background-color: var(--green-primary);
-    color: white;
-    font-weight: 600;
+.requests-table th,
+.form-container th {
+    background-color: var(--green-dark);
+    color: var(--green-white);
+    font-weight: bold;
 }
 
-.schedule_table tr:nth-child(even) {
+.requests-table tr:nth-child(even),
+.form-container tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.schedule_table tr:hover {
-    background-color: #f1f8e9;
+.requests-table tr:nth-child(odd),
+.form-container tr:nth-child(odd) {
+    background-color: #f0f7f0;
 }
 
-/* Back button consistency */
-.dashboard_btn {
+.requests-table tr:hover,
+.form-container tr:hover {
+    background-color: #d9efd9;
+}
+
+/* =========================
+   STATUS BADGES
+   ========================= */
+.status {
     display: inline-block;
-    padding: 12px 20px;
-    background-color: var(--green-primary);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-}
-
-.dashboard_btn:hover {
-    background-color: var(--green-dark);
-}
-/* Better spacing below select and button in schedule forms */
-.schedule_container form {
-    margin: 20px 0;
-}
-
-/* Center align headings inside schedule_container */
-.schedule_container h2,
-.schedule_container h3 {
+    min-width: 80px; /* uniform width */
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
     text-align: center;
+}
+
+.status.pending    { background-color: var(--orange); color: #fff; }
+.status.scheduled  { background-color: var(--blue); color: #fff; }
+.status.inprogress { background-color: #BDD7B0; color: #333; }
+.status.collected  { background-color: var(--green-dark); color: #fff; }
+.status.rejected   { background-color: var(--red-light); color: #fff; }
+
+/* =========================
+   TEXTAREAS
+   ========================= */
+textarea {
+    resize: none;
+    min-height: 120px;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+@media (max-width: 768px) {
+    .requests-table th,
+    .requests-table td,
+    .form-container th,
+    .form-container td {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .filter-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .requests-table {
+        display: block;
+        overflow-x: auto; /* horizontal scroll for small screens */
+    }
+
+    .content-wrapper,
+    .dashboard-container {
+        margin: 120px 10px 20px 10px;
+        padding: 15px;
+    }
 }

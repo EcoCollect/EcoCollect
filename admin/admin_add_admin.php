@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
+<?php include('admin_navbar.php'); ?>
     <div class="container">
         <h2>Add New Admin</h2>
         <?php if ($message != ""): ?>
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="password" placeholder="Password" required class="input">
             <button type="submit" class="green_btn">Add Admin</button>
         </form>
-        <a href="admin_dashboard.php" class="white_btn">⬅ Back to Dashboard</a>
+        <!-- <a href="admin_dashboard.php" class="white_btn">⬅ Back to Dashboard</a> -->
     </div>
 </body>
 </html>

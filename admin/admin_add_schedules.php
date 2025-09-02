@@ -41,6 +41,7 @@ $areas_result = $conn->query("SELECT area_id, area_name FROM area ORDER BY area_
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
+<?php include('admin_navbar.php'); ?>
     <div class="form_container">
         <h2>Add New Collection Schedule</h2>
 
