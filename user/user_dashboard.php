@@ -223,10 +223,10 @@ $recent_requests = $recent_requests_query->get_result();
     <!-- Quick Action Cards -->
     <div class="cards">
         <div class="card" onclick="location.href='user_view_schedule.php'"><h3>Schedule Collection</h3></div>
+        <div class="card" onclick="location.href='user_request.php'"><h3>Make a Request</h3></div>
         <div class="card" onclick="location.href='user_track_request.php'"><h3>Track Requests</h3></div>
-        <div class="card" onclick="location.href='collection_history.php'"><h3>Collection History</h3></div>
         <div class="card" onclick="location.href='user_complaint.php'"><h3>Complaints & Feedback</h3></div>
-        <div class="card" onclick="location.href='user_profile.php'"><h3>Update Profile</h3></div>
+        <div class="card" onclick="location.href='user_profile.php'"><h3>My Profile</h3></div>
         <div class="card" onclick="location.href='user_logout.php'"><h3>Logout</h3></div>
     </div>
 

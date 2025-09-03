@@ -35,29 +35,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>EcoCollect | User Login</title>
     <link rel="stylesheet" href="../assets/css/user_styles.css">
 </head>
 <body>
-<div class="login_container">
-    <div class="login_form_container">
-        <div class="left">
-            <form class="form_container" method="POST">
-                <h1>Login</h1>
-                <?php if ($message) echo "<div class='error_msg'>$message</div>"; ?>
-                <input type="email" name="email" placeholder="Email" class="input" required>
-                <input type="password" name="password" placeholder="Password" class="input" required>
-                <button type="submit" class="green_btn">Login</button>
-            </form>
-        </div>
-        <div class="right">
-            <h1>New Here?</h1>
-            <button class="white_btn" onclick="window.location.href='user_registration.php'">Register</button>
-            <button class="white_btn" onclick="window.location.href='../index.php'">Back to Home</button>
+    <div class="login_container">
+        <div class="login_form_container">
+            <div class="left">
+                <form class="form_container" method="POST">
+                    <h1>Login</h1>
+                    <?php if ($message) echo "<div class='error_msg'>$message</div>"; ?>
+                    <input type="email" name="email" placeholder="Email" class="input" required>
+                    <input type="password" name="password" placeholder="Password" class="input" required>
+                    <button type="submit" class="green_btn">Login</button>
+                </form>
+            </div>
+            <div class="right">
+                <h1>New Here?</h1>
+                <button class="white_btn" onclick="window.location.href='user_registration.php'">Register</button>
+                <button class="white_btn" onclick="window.location.href='../index.php'">Back to Home</button>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

@@ -9,8 +9,30 @@ if (!isset($_SESSION['admin_id'])) {
 
 $message = "";
 
+// Get area ID from URL parameter
+$area_id = isset($_GET['edit_id']) ? (int)$_GET['edit_id'] : 0;
+
+// If no area ID provided, redirect back to view areas
+if ($area_id <= 0) {
+    header("Location: admin_view_area.php");
+    exit();
+}
+
+// Fetch the specific area data
+$area_query = "SELECT * FROM area WHERE area_id = ?";
+$stmt = $conn->prepare($area_query);
+$stmt->bind_param("i", $area_id);
+$stmt->execute();
+$area_result = $stmt->get_result();
+
+if ($area_result->num_rows == 0) {
+    header("Location: admin_view_area.php");
+    exit();
+}
+
+$area = $area_result->fetch_assoc();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_area'])) {
-    $area_id = $_POST["area_id"];
     $area_name = $_POST["area_name"];
     $district = $_POST["district"];
     $state = $_POST["state"];
@@ -23,12 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_area'])) {
 
     if ($stmt->execute()) {
         $message = "Area updated successfully.";
+        // Refresh area data after update
+        $area_result = $conn->query("SELECT * FROM area WHERE area_id = $area_id");
+        $area = $area_result->fetch_assoc();
     } else {
         $message = "Error: " . $stmt->error;
     }
 }
-
-$areas_result = $conn->query("SELECT * FROM area ORDER BY area_name ASC");
 ?>
 
 <!DOCTYPE html>
@@ -115,6 +138,18 @@ $areas_result = $conn->query("SELECT * FROM area ORDER BY area_name ASC");
         .form-container button:hover {
             background-color: #2e7d32;
         }
+        .form-container .cancel-btn {
+            background-color: #6c757d;
+            margin-left: 10px;
+        }
+        .form-container .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
         .message {
             color: green;
             margin-bottom: 15px;
@@ -128,74 +163,36 @@ $areas_result = $conn->query("SELECT * FROM area ORDER BY area_name ASC");
 <body>
 <?php include('admin_navbar.php'); ?>
 <div class="content">
-    <div class="table-container">
-        <h2>Edit Areas</h2>
+    <div class="form-container">
+        <h2>Edit Area: <?php echo htmlspecialchars($area['area_name']); ?></h2>
         <?php if ($message != "") echo "<p class='message'>$message</p>"; ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Area ID</th>
-                    <th>Area Name</th>
-                    <th>District</th>
-                    <th>State</th>
-                    <th>Pin Code</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($row = $areas_result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['area_id']) ?></td>
-                    <td><?= htmlspecialchars($row['area_name']) ?></td>
-                    <td><?= htmlspecialchars($row['district']) ?></td>
-                    <td><?= htmlspecialchars($row['state']) ?></td>
-                    <td><?= htmlspecialchars($row['pin_code']) ?></td>
-                    <td><?= htmlspecialchars($row['area_description']) ?></td>
-                    <td>
-                        <button class="edit-btn" onclick="editArea(<?= $row['area_id'] ?>, '<?= htmlspecialchars($row['area_name']) ?>', '<?= htmlspecialchars($row['district']) ?>', '<?= htmlspecialchars($row['state']) ?>', '<?= htmlspecialchars($row['pin_code']) ?>', '<?= htmlspecialchars($row['area_description']) ?>')">Edit</button>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="form-container" id="editForm" style="display: none;">
-        <h2>Edit Area</h2>
         <form method="POST">
-            <input type="hidden" name="area_id" id="edit_area_id">
+            <input type="hidden" name="area_id" value="<?php echo $area['area_id']; ?>">
+
             <label>Area Name:</label>
-            <input type="text" name="area_name" id="edit_area_name" required>
+            <input type="text" name="area_name" value="<?php echo htmlspecialchars($area['area_name']); ?>" required>
 
             <label>District:</label>
-            <input type="text" name="district" id="edit_district">
+            <input type="text" name="district" value="<?php echo htmlspecialchars($area['district']); ?>">
 
             <label>State:</label>
-            <input type="text" name="state" id="edit_state">
+            <input type="text" name="state" value="<?php echo htmlspecialchars($area['state']); ?>">
 
             <label>Pin Code:</label>
-            <input type="text" name="pin_code" id="edit_pin_code">
+            <input type="text" name="pin_code" value="<?php echo htmlspecialchars($area['pin_code']); ?>">
 
             <label>Area Description:</label>
-            <textarea name="area_description" id="edit_area_description" rows="4"></textarea>
+            <textarea name="area_description" rows="4"><?php echo htmlspecialchars($area['area_description']); ?></textarea>
 
-            <button type="submit" name="update_area">Update Area</button>
+            <div class="button-group">
+                <button type="submit" name="update_area">Update Area</button>
+                <a href="admin_view_area.php" class="btn cancel-btn" style="text-decoration: none; padding: 10px 20px; display: inline-block;">Cancel</a>
+            </div>
         </form>
     </div>
 </div>
 
-<script>
-function editArea(id, name, district, state, pin, desc) {
-    document.getElementById('edit_area_id').value = id;
-    document.getElementById('edit_area_name').value = name;
-    document.getElementById('edit_district').value = district;
-    document.getElementById('edit_state').value = state;
-    document.getElementById('edit_pin_code').value = pin;
-    document.getElementById('edit_area_description').value = desc;
-    document.getElementById('editForm').style.display = 'block';
-    window.scrollTo(0, document.body.scrollHeight);
-}
-</script>
+
 </body>
 </html>

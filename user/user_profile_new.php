@@ -75,15 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $phone = $new_phone;
                 $address = $new_address;
                 $area_id = $new_area_id;
-
-                // fetch correct area name
-                $area_stmt = $conn->prepare("SELECT area_name FROM area WHERE area_id = ?");
-                $area_stmt->bind_param("i", $area_id);
-                $area_stmt->execute();
-                $area_stmt->bind_result($area_name);
-                $area_stmt->fetch();
-                $area_stmt->close();
-
+                $area_name = $areas->fetch_assoc()['area_name'];
                 $edit_mode = false;
             } else {
                 $message = "❌ Error updating profile: " . $stmt->error;
@@ -102,52 +94,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/user_styles.css">
     <style>
         .profile_container {
-            max-width: 600px;              /* Standard card size */
-            width: 90%;                    /* Responsive */
-            margin: 80px auto 40px auto;   /* Centered */
+            max-width: 600px;
+            margin: 100px auto 50px auto;
             padding: 30px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
         .profile_container h1 {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: #388e3c;
-            font-size: 24px;
-            font-weight: 600;
         }
-        .profile_view { margin-bottom: 30px; }
+        .profile_view {
+            margin-bottom: 30px;
+        }
         .profile_field {
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e6e6e6;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
         }
         .profile_field label {
             font-weight: bold;
-            color: #444;
-            font-size: 15px;
+            color: #555;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
         .profile_field .value {
-            color: #222;
+            color: #333;
             font-size: 16px;
         }
-        .edit_btn,
-        .profile_form button {
+        .edit_btn {
             background: #388e3c;
             color: white;
-            padding: 12px 18px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 15px;
-            transition: background 0.3s ease;
+            font-size: 16px;
             display: block;
             margin: 0 auto;
         }
-        .edit_btn:hover,
+        .edit_btn:hover {
+            background: #2e7d32;
+        }
+        .profile_form input, .profile_form select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .profile_form button {
+            background: #388e3c;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
         .profile_form button:hover {
             background: #2e7d32;
         }
@@ -158,20 +166,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .cancel_btn:hover {
             background: #5a6268;
         }
-        .profile_form input,
-        .profile_form select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-        }
         .message {
             margin: 15px 0;
             padding: 12px;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 4px;
+            font-size: 16px;
         }
         .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -190,29 +189,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label>Full Name</label>
                 <div class="value"><?php echo htmlspecialchars($name); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Email</label>
                 <div class="value"><?php echo htmlspecialchars($email); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Phone</label>
                 <div class="value"><?php echo htmlspecialchars($phone); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Address</label>
                 <div class="value"><?php echo htmlspecialchars($address); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Area</label>
                 <div class="value"><?php echo htmlspecialchars($area_name); ?></div>
             </div>
+
             <button class="edit_btn" onclick="window.location.href='user_profile.php?edit=1'">Edit Profile</button>
         </div>
     <?php else: ?>
         <!-- Edit Mode -->
         <form class="profile_form" method="POST">
             <label for="name">Full Name</label>
-            <input type="text" id="name" value="<?php echo htmlspecialchars($name); ?>" disabled>
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" disabled>
 
             <label for="email">Email</label>
             <input type="email" id="email" value="<?php echo htmlspecialchars($email); ?>" disabled>
@@ -236,9 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select id="area_id" name="area_id" required>
                 <option value="">Select Area</option>
                 <?php while ($row = $areas->fetch_assoc()): ?>
-                    <option value="<?php echo $row['area_id']; ?>" <?php echo ($row['area_id'] == $area_id) ? 'selected' : ''; ?>>
-                        <?php echo $row['area_name']; ?>
-                    </option>
+                    <option value="<?php echo $row['area_id']; ?>" <?php echo ($row['area_id'] == $area_id) ? 'selected' : ''; ?>><?php echo $row['area_name']; ?></option>
                 <?php endwhile; ?>
             </select>
 

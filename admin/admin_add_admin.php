@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <?php include('admin_navbar.php'); ?>
-    <div class="container">
+    <div class="container" style="margin-top: 80px;">
         <h2>Add New Admin</h2>
         <?php if ($message != ""): ?>
             <div class="message"><?php echo htmlspecialchars($message); ?></div>

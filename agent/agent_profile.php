@@ -2,18 +2,18 @@
 session_start();
 include('../db_connect/db_connect.php');
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
+if (!isset($_SESSION['agent_id'])) {
+    header("Location: agent_login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$agent_id = $_SESSION['agent_id'];
 $message = "";
 $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1';
 
-// Fetch current user data
-$stmt = $conn->prepare("SELECT user_name, user_email, user_phone, user_address, area_id, user_password FROM user WHERE user_id = ?");
-$stmt->bind_param("i", $user_id);
+// Fetch current agent data
+$stmt = $conn->prepare("SELECT name, email, phone, address, area_id, password FROM agent WHERE id = ?");
+$stmt->bind_param("i", $agent_id);
 $stmt->execute();
 $stmt->bind_result($name, $email, $phone, $address, $area_id, $hashed_password);
 $stmt->fetch();
@@ -53,19 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (!$message) {
-            $update_fields = "user_phone = ?, user_address = ?, area_id = ?";
+            $update_fields = "phone = ?, address = ?, area_id = ?";
             $params = [$new_phone, $new_address, $new_area_id];
             $types = "ssi";
 
             if ($update_password) {
                 $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
-                $update_fields .= ", user_password = ?";
+                $update_fields .= ", password = ?";
                 $params[] = $hashed_new_password;
                 $types .= "s";
             }
 
-            $stmt = $conn->prepare("UPDATE user SET $update_fields WHERE user_id = ?");
-            $params[] = $user_id;
+            $stmt = $conn->prepare("UPDATE agent SET $update_fields WHERE id = ?");
+            $params[] = $agent_id;
             $types .= "i";
             $stmt->bind_param($types, ...$params);
 
@@ -75,15 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $phone = $new_phone;
                 $address = $new_address;
                 $area_id = $new_area_id;
-
-                // fetch correct area name
-                $area_stmt = $conn->prepare("SELECT area_name FROM area WHERE area_id = ?");
-                $area_stmt->bind_param("i", $area_id);
-                $area_stmt->execute();
-                $area_stmt->bind_result($area_name);
-                $area_stmt->fetch();
-                $area_stmt->close();
-
+                $area_name = $areas->fetch_assoc()['area_name'];
                 $edit_mode = false;
             } else {
                 $message = "❌ Error updating profile: " . $stmt->error;
@@ -98,56 +90,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>EcoCollect | User Profile</title>
-    <link rel="stylesheet" href="../assets/css/user_styles.css">
+    <title>EcoCollect | Agent Profile</title>
+    <link rel="stylesheet" href="../assets/css/agent_styles.css">
     <style>
         .profile_container {
-            max-width: 600px;              /* Standard card size */
-            width: 90%;                    /* Responsive */
-            margin: 80px auto 40px auto;   /* Centered */
+            max-width: 600px;
+            margin: 100px auto 50px auto;
             padding: 30px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
         .profile_container h1 {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: #388e3c;
-            font-size: 24px;
-            font-weight: 600;
         }
-        .profile_view { margin-bottom: 30px; }
+        .profile_view {
+            margin-bottom: 30px;
+        }
         .profile_field {
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e6e6e6;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
         }
         .profile_field label {
             font-weight: bold;
-            color: #444;
-            font-size: 15px;
+            color: #555;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
         .profile_field .value {
-            color: #222;
+            color: #333;
             font-size: 16px;
         }
-        .edit_btn,
-        .profile_form button {
+        .my_area {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .my_area label {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        .my_area .value {
+            color: #1b5e20;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .edit_btn {
             background: #388e3c;
             color: white;
-            padding: 12px 18px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 15px;
-            transition: background 0.3s ease;
+            font-size: 16px;
             display: block;
             margin: 0 auto;
         }
-        .edit_btn:hover,
+        .edit_btn:hover {
+            background: #2e7d32;
+        }
+        .profile_form input, .profile_form select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .profile_form button {
+            background: #388e3c;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
         .profile_form button:hover {
             background: #2e7d32;
         }
@@ -158,27 +182,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .cancel_btn:hover {
             background: #5a6268;
         }
-        .profile_form input,
-        .profile_form select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-        }
         .message {
             margin: 15px 0;
             padding: 12px;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 4px;
+            font-size: 16px;
         }
         .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
-<?php include('user_navbar.php'); ?>
+<?php include('agent_navbar.php'); ?>
 <div class="profile_container">
     <h1><?php echo $edit_mode ? 'Edit Profile' : 'My Profile'; ?></h1>
     <?php if ($message) echo "<div class='message " . (strpos($message, '✅') !== false ? 'success' : 'error') . "'>$message</div>"; ?>
@@ -190,29 +205,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label>Full Name</label>
                 <div class="value"><?php echo htmlspecialchars($name); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Email</label>
                 <div class="value"><?php echo htmlspecialchars($email); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Phone</label>
                 <div class="value"><?php echo htmlspecialchars($phone); ?></div>
             </div>
+
             <div class="profile_field">
                 <label>Address</label>
                 <div class="value"><?php echo htmlspecialchars($address); ?></div>
             </div>
-            <div class="profile_field">
-                <label>Area</label>
+
+            <div class="my_area">
+                <label>My Area</label>
                 <div class="value"><?php echo htmlspecialchars($area_name); ?></div>
             </div>
-            <button class="edit_btn" onclick="window.location.href='user_profile.php?edit=1'">Edit Profile</button>
+
+            <button class="edit_btn" onclick="window.location.href='agent_profile.php?edit=1'">Edit Profile</button>
         </div>
     <?php else: ?>
         <!-- Edit Mode -->
         <form class="profile_form" method="POST">
             <label for="name">Full Name</label>
-            <input type="text" id="name" value="<?php echo htmlspecialchars($name); ?>" disabled>
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" disabled>
 
             <label for="email">Email</label>
             <input type="email" id="email" value="<?php echo htmlspecialchars($email); ?>" disabled>
@@ -233,17 +253,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($address); ?>" required>
 
             <label for="area_id">Area</label>
-            <select id="area_id" name="area_id" required>
+            <select id="area_id" name="area_id" disabled>
                 <option value="">Select Area</option>
                 <?php while ($row = $areas->fetch_assoc()): ?>
-                    <option value="<?php echo $row['area_id']; ?>" <?php echo ($row['area_id'] == $area_id) ? 'selected' : ''; ?>>
-                        <?php echo $row['area_name']; ?>
-                    </option>
+                    <option value="<?php echo $row['area_id']; ?>" <?php echo ($row['area_id'] == $area_id) ? 'selected' : ''; ?>><?php echo $row['area_name']; ?></option>
                 <?php endwhile; ?>
             </select>
 
             <button type="submit">Update Profile</button>
-            <button type="button" class="cancel_btn" onclick="window.location.href='user_profile.php'">Cancel</button>
+            <button type="button" class="cancel_btn" onclick="window.location.href='agent_profile.php'">Cancel</button>
         </form>
     <?php endif; ?>
 </div>

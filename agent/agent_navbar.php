@@ -2,13 +2,13 @@
 $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
 ?>
 <div class="navbar">
-    <a href="user_dashboard.php" class="<?php echo ($current_page == 'user_dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
-    <a href="user_view_schedule.php" class="<?php echo ($current_page == 'user_view_schedule.php') ? 'active' : ''; ?>">View Schedule</a>
-    <a href="user_request.php" class="<?php echo ($current_page == 'user_request.php') ? 'active' : ''; ?>">Request Collection</a>
-    <a href="user_track_request.php" class="<?php echo ($current_page == 'user_track_request.php') ? 'active' : ''; ?>">Track Requests</a>
-    <a href="user_complaint.php" class="<?php echo ($current_page == 'user_complaint.php') ? 'active' : ''; ?>">Complaints & Feedback</a>
-    <a href="user_profile.php" class="<?php echo ($current_page == 'user_profile.php') ? 'active' : ''; ?>">My Profile</a>
-    <a href="user_logout.php">Logout</a>
+    <a href="agent_dashboard.php" class="<?php echo ($current_page == 'agent_dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
+    <a href="agent_pickups.php" class="<?php echo ($current_page == 'agent_pickups.php') ? 'active' : ''; ?>">Pickup Schedules</a>
+    <a href="agent_view_schedule.php" class="<?php echo ($current_page == 'agent_view_schedule.php') ? 'active' : ''; ?>">View Schedules</a>
+    <a href="agent_collection_summary.php" class="<?php echo ($current_page == 'agent_collection_summary.php') ? 'active' : ''; ?>">Collection Summary</a>
+    <a href="agent_complaint.php" class="<?php echo ($current_page == 'agent_complaint.php') ? 'active' : ''; ?>">Complaints/Feedback</a>
+    <a href="agent_profile.php" class="<?php echo ($current_page == 'agent_profile.php') ? 'active' : ''; ?>">My Profile</a>
+    <a href="agent_logout.php">Logout</a>
 </div>
 
 <style>

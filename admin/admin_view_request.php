@@ -25,7 +25,7 @@
 </head>
 <body class="bg-light">
 <?php include('admin_navbar.php'); ?>
-<div class="container mt-5">
+<div class="container mt-5" style="margin-top: 100px !important;">
     <h2 class="mb-4">Manage Waste Collection Requests</h2>
 
     <?php

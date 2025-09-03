@@ -7,6 +7,7 @@
    ✅ Track Requests Table & Filters
    ✅ Complaints & Forms
    ✅ Status Badges
+   ✅ Login & Registration
    ✅ Responsive Enhancements
    ========================================= */
 
@@ -34,6 +35,10 @@ body {
     font-family: Arial, sans-serif;
     background-color: var(--green-light);
     color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .content-wrapper {
@@ -42,9 +47,228 @@ body {
     padding: 20px;
 }
 
-/* =========================
+/* ================================
+   LOGIN & REGISTRATION STYLES
+   ================================ */
+.login_container {
+    width: 90%;
+    max-width: 900px;
+    min-height: 600px;   /* 👈 Increased height */
+    background-color: var(--green-white);
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 120px auto; /* Space from top */
+}
+
+.login_form_container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.left, .right {
+    flex: 1;
+    padding: 60px;   /* 👈 Increased padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.left {
+    background-color: var(--green-white);
+}
+
+.right {
+    background-color: var(--green-primary);
+}
+
+.right h1 {
+    color: var(--green-white);
+    font-size: 26px;
+    text-align: center;
+}
+
+.form_container {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_container h1 {
+    font-size: 24px;
+    color: var(--green-dark);
+    margin-bottom: 10px;
+}
+
+.input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: var(--green-white);
+    box-sizing: border-box;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 5 5-5H0z' fill='%2366bb6a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 40px;
+}
+
+.input:focus,
+select:focus {
+    border: 1px solid var(--green-primary);
+    outline: none;
+}
+
+.error_msg {
+    width: 100%;
+    background-color: #f44336;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* Buttons */
+.green_btn,
+.white_btn {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.green_btn {
+    background-color: var(--green-primary);
+    color: white;
+}
+
+.green_btn:hover {
+    background-color: var(--green-dark);
+}
+
+.white_btn {
+    background-color: var(--green-white);
+    color: var(--green-primary);
+}
+
+.white_btn:hover {
+    background-color: var(--green-light);
+    color: var(--green-dark);
+}
+
+/* ================================
+   USER DASHBOARD STYLES
+   ================================ */
+.dashboard_container {
+    background: #ffffff;
+    display: inline-block;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    margin: 40px auto;
+}
+
+.dashboard_container h1 {
+    color: #2e7d32;
+    margin-bottom: 30px;
+}
+
+.dashboard_btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 10px auto;
+    background-color: var(--green-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.dashboard_btn:hover {
+    background-color: var(--green-dark);
+}
+
+/* ================================
+   AREA-WISE SCHEDULE VIEWING
+   ================================ */
+.schedule_container {
+    width: 95%;
+    max-width: 1000px;
+    background-color: var(--green-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.center_heading {
+    text-align: center;
+    font-size: 24px;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+}
+
+.schedule_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto 20px auto;
+    font-size: 16px;
+}
+
+.schedule_table th,
+.schedule_table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.schedule_table th {
+    background-color: var(--green-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.schedule_table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.schedule_table tr:hover {
+    background-color: #f1f8e9;
+}
+
+/* ================================
    NAVBAR STYLING
-   ========================= */
+   ================================ */
 .navbar {
     background: var(--green-dark);
     padding: 12px 20px;
@@ -75,33 +299,9 @@ body {
     background: var(--green-primary);
 }
 
-/* =========================
-   DASHBOARD CONTAINER
-   ========================= */
-.dashboard-container {
-    max-width: 1100px;
-    margin: 100px auto 30px auto;
-    padding: 20px;
-    background: var(--green-white);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.dashboard-container h2 {
-    color: var(--green-dark);
-    margin-bottom: 15px;
-    font-size: 24px;
-    text-align: center;
-}
-
-.dashboard-container p {
-    text-align: center;
-    color: #555;
-}
-
-/* =========================
+/* ================================
    FORMS & TRACK CONTAINER
-   ========================= */
+   ================================ */
 .track-container,
 .form-container {
     background: var(--green-white);
@@ -117,9 +317,6 @@ body {
     color: var(--green-dark);
 }
 
-/* =========================
-   FILTER & FORM STYLING
-   ========================= */
 .filter-form,
 .form-container form {
     display: flex;
@@ -128,11 +325,6 @@ body {
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
-}
-
-.filter-form label,
-.form-container label {
-    font-weight: bold;
 }
 
 .filter-form input[type="date"],
@@ -149,46 +341,10 @@ body {
     max-width: 300px;
 }
 
-/* =========================
-   BUTTONS
-   ========================= */
-.filter-form button,
-.form-container button,
-.reset-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.filter-form button,
-.form-container button {
-    background-color: var(--green-dark);
-    color: var(--green-white);
-}
-
-.filter-form button:hover,
-.form-container button:hover {
-    background-color: #2e7d32;
-}
-
-.reset-btn {
-    text-decoration: none;
-    background-color: var(--red-light);
-    color: var(--green-white);
-}
-
-.reset-btn:hover {
-    background-color: var(--red-dark);
-}
-
-/* =========================
+/* ================================
    REQUESTS TABLE STYLING
-   ========================= */
-.requests-table,
-.form-container table {
+   ================================ */
+.requests-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
@@ -196,45 +352,38 @@ body {
 }
 
 .requests-table th,
-.requests-table td,
-.form-container th,
-.form-container td {
+.requests-table td {
     border: 1px solid #ddd;
     padding: 12px 15px;
-    text-align: center;        /* horizontal centering */
-    vertical-align: middle;    /* vertical centering */
+    text-align: center;
     font-size: 14px;
-    white-space: nowrap;       /* prevents wrapping in IDs/status */
+    white-space: nowrap;
 }
 
-.requests-table th,
-.form-container th {
+.requests-table th {
     background-color: var(--green-dark);
     color: var(--green-white);
     font-weight: bold;
 }
 
-.requests-table tr:nth-child(even),
-.form-container tr:nth-child(even) {
+.requests-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.requests-table tr:nth-child(odd),
-.form-container tr:nth-child(odd) {
+.requests-table tr:nth-child(odd) {
     background-color: #f0f7f0;
 }
 
-.requests-table tr:hover,
-.form-container tr:hover {
+.requests-table tr:hover {
     background-color: #d9efd9;
 }
 
-/* =========================
+/* ================================
    STATUS BADGES
-   ========================= */
+   ================================ */
 .status {
     display: inline-block;
-    min-width: 80px; /* uniform width */
+    min-width: 80px;
     padding: 5px 12px;
     border-radius: 12px;
     font-weight: bold;
@@ -248,38 +397,25 @@ body {
 .status.collected  { background-color: var(--green-dark); color: #fff; }
 .status.rejected   { background-color: var(--red-light); color: #fff; }
 
-/* =========================
-   TEXTAREAS
-   ========================= */
-textarea {
-    resize: none;
-    min-height: 120px;
-}
-
-/* =========================
+/* ================================
    RESPONSIVE DESIGN
-   ========================= */
+   ================================ */
 @media (max-width: 768px) {
-    .requests-table th,
-    .requests-table td,
-    .form-container th,
-    .form-container td {
-        padding: 8px 10px;
-        font-size: 13px;
+    .login_container {
+        flex-direction: column;
+        min-height: auto;
     }
 
-    .filter-form {
-        flex-direction: column;
-        align-items: flex-start;
+    .left, .right {
+        padding: 30px;
     }
 
     .requests-table {
         display: block;
-        overflow-x: auto; /* horizontal scroll for small screens */
+        overflow-x: auto;
     }
 
-    .content-wrapper,
-    .dashboard-container {
+    .content-wrapper {
         margin: 120px 10px 20px 10px;
         padding: 15px;
     }

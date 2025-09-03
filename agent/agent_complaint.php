@@ -2,21 +2,21 @@
 session_start();
 include('../db_connect/db_connect.php');
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../user_login.php");
+if (!isset($_SESSION['agent_id'])) {
+    header("Location: agent_login.php");
     exit();
 }
 
 if (isset($_POST['submit'])) {
-    $user_id = $_SESSION['user_id'];
+    $agent_id = $_SESSION['agent_id'];
     $complaint = $_POST['complaint'];
 
-    $stmt = $conn->prepare("INSERT INTO complaints (user_id, complaint_text) VALUES (?, ?)");
-    $stmt->bind_param("is", $user_id, $complaint);
+    $stmt = $conn->prepare("INSERT INTO agent_complaints (user_id, complaint_text) VALUES (?, ?)");
+    $stmt->bind_param("is", $agent_id, $complaint);
     $stmt->execute();
     $stmt->close();
 
-$success = "Thank you! Your complaint/feedback has been submitted.";
+    $success = "Complaint submitted successfully!";
 }
 ?>
 
@@ -24,7 +24,7 @@ $success = "Thank you! Your complaint/feedback has been submitted.";
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Complaints & Feedback</title>
+    <title>Agent Complaints & Feedback</title>
     <style>
         body {
             margin: 0;
@@ -71,7 +71,7 @@ $success = "Thank you! Your complaint/feedback has been submitted.";
 </head>
 <body>
 
-<?php include('user_navbar.php'); ?> <!-- Include the navbar -->
+<?php include('agent_navbar.php'); ?> <!-- Include the navbar -->
 
 <div class="content">
     <div class="form-container">

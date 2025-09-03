@@ -4,11 +4,11 @@ include('../db_connect/db_connect.php');
 // Fetch areas for dropdown
 $area_result = $conn->query("SELECT * FROM area");
 
-// Fetch schedules for dropdown
-$schedule_result = $conn->query("SELECT schedule_id, collection_date, collection_time FROM schedule");
+// Fetch schedules for dropdown, excluding expired
+$schedule_result = $conn->query("SELECT schedule_id, collection_date, collection_time, waste_type FROM schedule WHERE status != 'Expired'");
 
-// Fetch waste types for dropdown
-$waste_result = $conn->query("SELECT * FROM waste_type");
+// Fetch waste types for dropdown, excluding 'all' and 'textile' if present
+$waste_result = $conn->query("SELECT * FROM waste_type WHERE waste_name NOT IN ('all', 'textile')");
 
 $message = ""; // Store success/error message
 
@@ -16,15 +16,25 @@ $message = ""; // Store success/error message
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $area_id = $_POST['area_id'];
-    $waste_type = $_POST['waste_type'];
-    $weight = $_POST['weight'];
+    $waste_types = $_POST['waste_type'];
+    $weights = $_POST['weight'];
     $schedule_id = $_POST['schedule_id'];
     $remarks = $_POST['remarks'];
 
+    $success = true;
     $stmt = $conn->prepare("INSERT INTO request_collection (name, area_id, waste_type, weight, schedule_id, remarks) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sisdis", $name, $area_id, $waste_type, $weight, $schedule_id, $remarks);
 
-    if ($stmt->execute()) {
+    for ($i = 0; $i < count($waste_types); $i++) {
+        $waste_type = $waste_types[$i];
+        $weight = $weights[$i];
+        if (!$stmt->execute()) {
+            $success = false;
+            break;
+        }
+    }
+
+    if ($success) {
         $message = "<p class='success'>Request submitted successfully!</p>";
     } else {
         $message = "<p class='error'>Error: " . $stmt->error . "</p>";
@@ -117,32 +127,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label>Area:</label>
             <select name="area_id" required>
-                <option value="">--Select Area--</option>
                 <?php while($row = $area_result->fetch_assoc()) { ?>
                     <option value="<?php echo $row['area_id']; ?>"><?php echo $row['area_name']; ?></option>
                 <?php } ?>
             </select>
 
-            <label>Waste Type:</label>
-            <select name="waste_type" required>
-                <option value="">--Select Waste Type--</option>
-                <?php while($row = $waste_result->fetch_assoc()) { ?>
-                    <option value="<?php echo $row['waste_name']; ?>"><?php echo $row['waste_name']; ?></option>
-                <?php } ?>
-            </select>
-
-            <label>Weight (kg):</label>
-            <input type="number" name="weight" step="0.01" required>
-
             <label>Schedule:</label>
-            <select name="schedule_id" required>
-                <option value="">--Select Schedule--</option>
+            <select name="schedule_id" id="schedule_id" required>
                 <?php while($row = $schedule_result->fetch_assoc()) { ?>
-                    <option value="<?php echo $row['schedule_id']; ?>">
+                    <option value="<?php echo $row['schedule_id']; ?>" data-waste-type="<?php echo htmlspecialchars($row['waste_type']); ?>">
                         <?php echo $row['collection_date'] . " - " . $row['collection_time']; ?>
                     </option>
                 <?php } ?>
             </select>
+
+            <div id="waste-items">
+                <div class="waste-item">
+                    <label>Waste Type:</label>
+                    <select name="waste_type[]" required>
+                        <option value="">Select Type</option>
+                        <?php
+                        $waste_result_copy = $conn->query("SELECT * FROM waste_type WHERE waste_name NOT IN ('all', 'textile')");
+                        while($row = $waste_result_copy->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['waste_name']; ?>"><?php echo $row['waste_name']; ?></option>
+                        <?php } ?>
+                    </select>
+
+                    <label>Weight (kg):</label>
+                    <input type="number" name="weight[]" step="0.01" required>
+                </div>
+            </div>
+
+            <button type="button" id="add-waste" style="background: none; color: #007bff; border: none; text-decoration: underline; cursor: pointer; padding: 0; margin-bottom: 12px;">Add Another Waste Type</button>
 
             <label>Remarks:</label>
             <textarea name="remarks"></textarea>
@@ -151,5 +167,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         </div>
     </div>
+
+    <script>
+        function filterWasteTypes() {
+            const scheduleSelect = document.getElementById('schedule_id');
+            const selectedOption = scheduleSelect.options[scheduleSelect.selectedIndex];
+            const wasteType = selectedOption ? selectedOption.getAttribute('data-waste-type') : '';
+            const allowedTypes = wasteType === 'all' ? [] : wasteType.split(',').map(t => t.trim());
+
+            const wasteSelects = document.querySelectorAll('select[name="waste_type[]"]');
+            wasteSelects.forEach(select => {
+                const options = select.querySelectorAll('option');
+                options.forEach(option => {
+                    if (wasteType === 'all' || allowedTypes.includes(option.value)) {
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                        if (option.selected) {
+                            option.selected = false;
+                        }
+                    }
+                });
+            });
+        }
+
+        document.getElementById('schedule_id').addEventListener('change', filterWasteTypes);
+
+        document.getElementById('add-waste').addEventListener('click', function() {
+            const wasteItems = document.getElementById('waste-items');
+            const firstItem = wasteItems.querySelector('.waste-item');
+            const newItem = firstItem.cloneNode(true);
+            // Clear the values in the new item
+            const selects = newItem.querySelectorAll('select');
+            const inputs = newItem.querySelectorAll('input');
+            selects.forEach(select => select.selectedIndex = 0);
+            inputs.forEach(input => input.value = '');
+            wasteItems.appendChild(newItem);
+            filterWasteTypes(); // Apply filter to new select
+        });
+
+        // Initial filter
+        filterWasteTypes();
+    </script>
 </body>
 </html>

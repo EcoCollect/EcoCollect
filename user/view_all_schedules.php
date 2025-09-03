@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
         }
     }
 
-    // Fetch schedules for selected area
-    $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? ORDER BY collection_date ASC");
+    // Fetch schedules for selected area, excluding expired
+    $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? AND status != 'Expired' ORDER BY collection_date ASC");
     $stmt->bind_param("i", $selected_area_id);
     $stmt->execute();
     $result = $stmt->get_result();
