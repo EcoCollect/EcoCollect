@@ -42,8 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
+<<<<<<< HEAD
 <?php include('admin_navbar.php'); ?>
     <div class="container" style="margin-top: 80px;">
+=======
+    <div class="container">
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
         <h2>Add New Admin</h2>
         <?php if ($message != ""): ?>
             <div class="message"><?php echo htmlspecialchars($message); ?></div>
@@ -54,7 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="password" placeholder="Password" required class="input">
             <button type="submit" class="green_btn">Add Admin</button>
         </form>
+<<<<<<< HEAD
         <!-- <a href="admin_dashboard.php" class="white_btn">⬅ Back to Dashboard</a> -->
+=======
+        <a href="admin_dashboard.php" class="white_btn">⬅ Back to Dashboard</a>
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     </div>
 </body>
 </html>

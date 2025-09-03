@@ -34,8 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
         }
     }
 
+<<<<<<< HEAD
     // Fetch schedules for selected area, excluding expired
     $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? AND status != 'Expired' ORDER BY collection_date ASC");
+=======
+    // Fetch schedules for selected area
+    $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? ORDER BY collection_date ASC");
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     $stmt->bind_param("i", $selected_area_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -46,8 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
 }
 ?>
 
+<<<<<<< HEAD
 <?php include 'user_navbar.php'; ?>
 
+=======
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
     <link rel="stylesheet" href="../assets/css/user_styles.css">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="page_content" style="padding-top: 80px;">
         <div class="schedule_container">
+=======
+    <div class="schedule_container">
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
         <h2>View Area-wise Collection Schedule</h2>
 
         <form method="POST">
@@ -106,7 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
         <?php endif; ?>
 
         <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
+<<<<<<< HEAD
         </div>
+=======
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     </div>
 </body>
 </html>

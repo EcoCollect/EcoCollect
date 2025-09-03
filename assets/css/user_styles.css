@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* =========================================
    EcoCollect - User Module Styles
    Fully Combined & Commented
@@ -14,11 +15,23 @@
 /* =========================
    COLOR VARIABLES
    ========================= */
+=======
+/* ================================
+   EcoCollect User Module CSS
+   Covers:
+   ✅ Login & Registration
+   ✅ User Dashboard
+   ✅ Schedule Viewing
+   ================================ */
+
+/* ========== Color Variables ========== */
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 :root {
     --green-light: #e8f5e9;
     --green-primary: #66bb6a;
     --green-dark: #388e3c;
     --green-white: #ffffff;
+<<<<<<< HEAD
     --red-dark: #b71c1c;
     --red-light: #d32f2f;
     --orange: #fb8c00;
@@ -45,6 +58,26 @@ body {
     max-width: 1000px;
     margin: 100px auto 30px auto; /* space for fixed navbar */
     padding: 20px;
+=======
+}
+
+/* ========== GENERAL LAYOUT ========== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--green-light);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Optional utility for centering specific pages if needed */
+.center_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 }
 
 /* ================================
@@ -53,13 +86,20 @@ body {
 .login_container {
     width: 90%;
     max-width: 900px;
+<<<<<<< HEAD
     min-height: 600px;   /* 👈 Increased height */
+=======
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     background-color: var(--green-white);
     display: flex;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     overflow: hidden;
+<<<<<<< HEAD
     margin: 120px auto; /* Space from top */
+=======
+    margin: 40px auto;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 }
 
 .login_form_container {
@@ -70,7 +110,11 @@ body {
 
 .left, .right {
     flex: 1;
+<<<<<<< HEAD
     padding: 60px;   /* 👈 Increased padding */
+=======
+    padding: 30px;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -93,7 +137,11 @@ body {
 
 .form_container {
     width: 100%;
+<<<<<<< HEAD
     max-width: 300px;
+=======
+    max-width: 350px;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,13 +150,21 @@ body {
 .form_container h1 {
     font-size: 24px;
     color: var(--green-dark);
+<<<<<<< HEAD
     margin-bottom: 10px;
+=======
+    margin-bottom: 20px;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 }
 
 .input,
 select {
     width: 100%;
+<<<<<<< HEAD
     padding: 10px;
+=======
+    padding: 12px;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -138,6 +194,7 @@ select:focus {
     width: 100%;
     background-color: #f44336;
     color: white;
+<<<<<<< HEAD
     padding: 8px;
     border-radius: 6px;
     text-align: center;
@@ -151,6 +208,21 @@ select:focus {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
+=======
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Buttons for forms */
+.green_btn,
+.white_btn {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     border: none;
     border-radius: 6px;
     font-size: 15px;
@@ -215,9 +287,15 @@ select:focus {
     background-color: var(--green-dark);
 }
 
+<<<<<<< HEAD
 /* ================================
    AREA-WISE SCHEDULE VIEWING
    ================================ */
+=======
+/* ========== AREA-WISE SCHEDULE VIEWING ========== */
+
+/* Container */
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 .schedule_container {
     width: 95%;
     max-width: 1000px;
@@ -230,6 +308,10 @@ select:focus {
     text-align: center;
 }
 
+<<<<<<< HEAD
+=======
+/* Center heading */
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 .center_heading {
     text-align: center;
     font-size: 24px;
@@ -237,6 +319,10 @@ select:focus {
     margin-bottom: 20px;
 }
 
+<<<<<<< HEAD
+=======
+/* Table */
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 .schedule_table {
     width: 100%;
     border-collapse: collapse;
@@ -266,6 +352,7 @@ select:focus {
     background-color: #f1f8e9;
 }
 
+<<<<<<< HEAD
 /* ================================
    NAVBAR STYLING
    ================================ */
@@ -420,3 +507,32 @@ select:focus {
         padding: 15px;
     }
 }
+=======
+/* Back button consistency */
+.dashboard_btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: var(--green-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.dashboard_btn:hover {
+    background-color: var(--green-dark);
+}
+/* Better spacing below select and button in schedule forms */
+.schedule_container form {
+    margin: 20px 0;
+}
+
+/* Center align headings inside schedule_container */
+.schedule_container h2,
+.schedule_container h3 {
+    text-align: center;
+}
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65

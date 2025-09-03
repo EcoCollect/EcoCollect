@@ -1,11 +1,15 @@
 <?php
 session_start();
+<<<<<<< HEAD
 include('../db_connect/db_connect.php');
 
+=======
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
     exit();
 }
+<<<<<<< HEAD
 
 // Get summary statistics
 $user_count = $conn->query("SELECT COUNT(*) as count FROM user")->fetch_assoc()['count'];
@@ -21,10 +25,15 @@ $recent_complaints = $conn->query("SELECT c.complaint_text, u.user_name, c.creat
 $recent_agent_complaints = $conn->query("SELECT ac.complaint_text, a.name, ac.created_at FROM agent_complaints ac JOIN agent a ON ac.user_id = a.id ORDER BY ac.created_at DESC LIMIT 3");
 ?>
 
+=======
+$user_name = $_SESSION['admin_name'];
+?>
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>EcoCollect | Admin Dashboard</title>
     <style>
         body {
@@ -252,5 +261,17 @@ $recent_agent_complaints = $conn->query("SELECT ac.complaint_text, a.name, ac.cr
         </div>
     </div>
 </div>
+=======
+    <title>EcoCollect | User Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/admin_styles.css">
+</head>
+<body>
+    <div class="dashboard_container">
+        <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
+        <a href="admin_add_schedules.php" class="dashboard_btn">Add Shedule</a>
+        <a href="admin_add_agent.php" class="dashboard_btn">Add Agent</a>
+
+        </div>
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 </body>
 </html>

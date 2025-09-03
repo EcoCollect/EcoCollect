@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $area_id = $_POST['area_id'];
     $collection_date = $_POST['collection_date'];
     $collection_time = $_POST['collection_time'];
+<<<<<<< HEAD
     $waste_types = isset($_POST['waste_type']) ? $_POST['waste_type'] : [];
     $waste_type = implode(',', $waste_types);
     $remarks = $_POST['remarks'] ?? '';
@@ -20,6 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $conn->prepare("INSERT INTO schedule (area_id, collection_date, collection_time, waste_type, remarks, status) 
                             VALUES (?, ?, ?, ?, ?, ?)");
+=======
+    $waste_type = $_POST['waste_type'];
+    $remarks = $_POST['remarks'] ?? '';
+    $status = $_POST['status'] ?? 'Scheduled'; // use default if empty
+
+    $stmt = $conn->prepare("INSERT INTO schedule (area_id, collection_date, collection_time, waste_type, remarks, status) VALUES (?, ?, ?, ?, ?, ?)");
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     $stmt->bind_param("isssss", $area_id, $collection_date, $collection_time, $waste_type, $remarks, $status);
 
     if ($stmt->execute()) {
@@ -27,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $error = "❌ Error adding schedule: " . $stmt->error;
     }
+<<<<<<< HEAD
     $stmt->close();
 }
 
@@ -35,6 +44,14 @@ $areas_result = $conn->query("SELECT area_id, area_name FROM area ORDER BY area_
 
 // Fetch waste types
 $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE waste_name != 'all' ORDER BY waste_name ASC");
+=======
+
+    $stmt->close();
+}
+
+// Fetch areas for dropdown
+$areas_result = $conn->query("SELECT area_id, area_name FROM area ORDER BY area_name ASC");
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +60,7 @@ $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE wast
     <meta charset="UTF-8">
     <title>Add Schedule | EcoCollect Admin</title>
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
+<<<<<<< HEAD
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -241,6 +259,20 @@ $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE wast
 
     <form method="post">
         <div>
+=======
+</head>
+<body>
+    <div class="form_container">
+        <h2>Add New Collection Schedule</h2>
+
+        <?php if (!empty($success)): ?>
+            <p style="color: green;"><?= $success ?></p>
+        <?php elseif (!empty($error)): ?>
+            <p style="color: red;"><?= $error ?></p>
+        <?php endif; ?>
+
+        <form method="post">
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
             <label>Area:</label>
             <select name="area_id" required>
                 <option value="">-- Select Area --</option>
@@ -248,6 +280,7 @@ $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE wast
                     <option value="<?= $row['area_id']; ?>"><?= htmlspecialchars($row['area_name']); ?></option>
                 <?php endwhile; ?>
             </select>
+<<<<<<< HEAD
         </div>
 
         <div>
@@ -282,12 +315,28 @@ $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE wast
         </div>
 
         <div>
+=======
+
+            <label>Collection Date:</label>
+            <input type="date" name="collection_date" required>
+
+            <label>Collection Time:</label>
+            <input type="time" name="collection_time" required>
+
+            <label>Waste Type:</label>
+            <input type="text" name="waste_type" required placeholder="e.g., Plastic, Organic">
+
+            <label>Remarks (optional):</label>
+            <textarea name="remarks" rows="3" placeholder="Any extra info..."></textarea>
+
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
             <label>Status:</label>
             <select name="status">
                 <option value="Scheduled">Scheduled</option>
                 <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
             </select>
+<<<<<<< HEAD
         </div>
 
         <button type="submit" class="green_btn">➕ Add Schedule</button>
@@ -320,3 +369,14 @@ $waste_types_result = $conn->query("SELECT waste_name FROM waste_type WHERE wast
 </html>
 
 <?php $conn->close(); ?>
+=======
+
+            <button type="submit" class="green_btn">➕ Add Schedule</button>
+            <a href="admin_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
+        </form>
+    </div>
+</body>
+</html>
+
+<?php $conn->close(); ?>
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65

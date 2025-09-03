@@ -64,4 +64,8 @@ $areas = $conn->query("SELECT area_id, area_name FROM area");
     </div>
 </div>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
