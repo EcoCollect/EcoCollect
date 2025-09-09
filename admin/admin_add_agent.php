@@ -1,5 +1,4 @@
-<?php
-<<<<<<< HEAD
+    <?php
 session_start();
 include('../db_connect/db_connect.php');
 
@@ -8,10 +7,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-=======
-include('../db_connect/db_connect.php');
-
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 $message = "";
 
 // Fetch all areas for dropdown
@@ -27,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST["status"];
     $area_id = $_POST["area_id"];
 
-<<<<<<< HEAD
     // Check if email already exists
     $check_sql = "SELECT email FROM agent WHERE email = ?";
     $check_stmt = $conn->prepare($check_sql);
@@ -48,17 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $message = "Error: " . $stmt->error;
         }
-=======
-    $sql = "INSERT INTO agent (email, password, name, phone, address, status, area_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi", $email, $hashed_password, $name, $phone, $address, $status, $area_id);
-
-    if ($stmt->execute()) {
-        $message = "Agent added successfully.";
-    } else {
-        $message = "Error: " . $stmt->error;
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     }
 }
 ?>
@@ -66,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
     <title>Add Agent | EcoCollect Admin</title>
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
     <style>
@@ -215,47 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
 
             <button type="submit">➕ Add Agent</button>
-=======
-    <title>Add Agent</title>
-    <link rel="stylesheet" type="text/css" href="../css/styles.css">
-</head>
-<body>
-    <div class="container">
-        <h2>Add New Agent</h2>
-        <?php if ($message != "") echo "<p class='message'>$message</p>"; ?>
-        <form method="POST" class="form-box">
-            <label>Email:</label><br>
-            <input type="email" name="email" required><br>
-
-            <label>Password:</label><br>
-            <input type="text" name="password" required><br>
-
-            <label>Name:</label><br>
-            <input type="text" name="name" required><br>
-
-            <label>Phone:</label><br>
-            <input type="text" name="phone"><br>
-
-            <label>Address:</label><br>
-            <textarea name="address"></textarea><br>
-
-            <label>Area:</label><br>
-            <select name="area_id" required>
-                <option value="">-- Select Area --</option>
-                <?php while ($row = mysqli_fetch_assoc($area_result)) { ?>
-                    <option value="<?php echo $row['area_id']; ?>"><?php echo $row['area_name']; ?></option>
-                <?php } ?>
-            </select><br>
-
-            <label>Status:</label><br>
-            <select name="status">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select><br>
-
-            
-            <button type="submit">Add Agent</button>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
         </form>
     </div>
 </body>

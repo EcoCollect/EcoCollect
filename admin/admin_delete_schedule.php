@@ -25,14 +25,18 @@ $status_stmt->close();
 $stmt = $conn->prepare("DELETE FROM schedule WHERE schedule_id = ?");
 $stmt->bind_param("i", $schedule_id);
 
-if ($stmt->execute()) {
-    if ($schedule_status === 'Expired') {
-        $success = "✅ Expired schedule deleted successfully!";
+try {
+    if ($stmt->execute()) {
+        if ($schedule_status === 'Expired') {
+            $success = "✅ Expired schedule deleted successfully!";
+        } else {
+            $success = "✅ Schedule deleted successfully!";
+        }
     } else {
-        $success = "✅ Schedule deleted successfully!";
+        $error = "❌ Error deleting schedule: " . $stmt->error;
     }
-} else {
-    $error = "❌ Error deleting schedule: " . $stmt->error;
+} catch (mysqli_sql_exception $e) {
+    $error = "❌ Cannot delete schedule because it has associated collection requests.";
 }
 
 $stmt->close();

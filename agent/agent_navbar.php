@@ -2,6 +2,7 @@
 $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
 ?>
 <div class="navbar">
+    <span class="role-label">AGENT</span>
     <a href="agent_dashboard.php" class="<?php echo ($current_page == 'agent_dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
     <a href="agent_pickups.php" class="<?php echo ($current_page == 'agent_pickups.php') ? 'active' : ''; ?>">Pickup Schedules</a>
     <a href="agent_view_schedule.php" class="<?php echo ($current_page == 'agent_view_schedule.php') ? 'active' : ''; ?>">View Schedules</a>
@@ -45,6 +46,13 @@ $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
 .navbar a.active {
     background-color: #66bb6a;
     color: white;
+}
+
+.role-label {
+    color: yellow;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 16px;
 }
 
 body {

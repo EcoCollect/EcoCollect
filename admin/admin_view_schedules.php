@@ -14,6 +14,9 @@ $result = $conn->query("SELECT s.schedule_id, a.area_name, s.collection_date, s.
 
 // Expire schedules where date has passed and status is Scheduled
 $conn->query("UPDATE schedule SET status = 'Expired' WHERE collection_date < CURDATE() AND status = 'Scheduled'");
+
+// Check for message from URL parameter
+$message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : null;
 ?>
 
 <!DOCTYPE html>

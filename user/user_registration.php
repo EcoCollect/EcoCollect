@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $areas = $conn->query("SELECT area_id, area_name FROM area");
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>EcoCollect | User Registration</title>
     <link rel="stylesheet" href="../assets/css/user_styles.css">
@@ -64,8 +64,4 @@ $areas = $conn->query("SELECT area_id, area_name FROM area");
     </div>
 </div>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65

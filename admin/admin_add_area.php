@@ -8,6 +8,7 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 $message = "";
+$message_type = "message";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $area_name = $_POST["area_name"];
@@ -16,15 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pin_code = $_POST["pin_code"];
     $area_description = $_POST["area_description"];
 
-    $sql = "INSERT INTO area (area_name, district, state, pin_code, area_description) 
+    $sql = "INSERT INTO area (area_name, district, state, pin_code, area_description)
             VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $area_name, $district, $state, $pin_code, $area_description);
 
-    if ($stmt->execute()) {
-        $message = "Area added successfully.";
-    } else {
-        $message = "Error: " . $stmt->error;
+    try {
+        if ($stmt->execute()) {
+            $message = "Area added successfully.";
+            $message_type = "message";
+        } else {
+            $message = "Error: " . $stmt->error;
+            $message_type = "error";
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            $message = "Area with this name already exists.";
+        } else {
+            $message = "Error: " . $e->getMessage();
+        }
+        $message_type = "error";
     }
 }
 ?>
@@ -96,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="content">
     <div class="form-container">
         <h2>Add New Area</h2>
-        <?php if ($message != "") echo "<p class='message'>$message</p>"; ?>
+        <?php if ($message != "") echo "<p class='$message_type'>$message</p>"; ?>
         <form method="POST">
             <label>Area Name:</label>
             <input type="text" name="area_name" required>

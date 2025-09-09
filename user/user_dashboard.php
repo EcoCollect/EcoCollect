@@ -1,6 +1,5 @@
 <?php
 session_start();
-<<<<<<< HEAD
 include("../db_connect/db_connect.php");
 
 if (!isset($_SESSION['user_id'])) {
@@ -33,19 +32,10 @@ $recent_requests_query->execute();
 $recent_requests = $recent_requests_query->get_result();
 ?>
 
-=======
-if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
-    exit();
-}
-$user_name = $_SESSION['user_name'];
-?>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <title>EcoCollect | Home</title>
 
     <!-- Google Fonts -->
@@ -309,18 +299,3 @@ $collected_requests_query->close();
 $recent_requests_query->close();
 $conn->close();
 ?>
-=======
-    <title>EcoCollect | User Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/user_styles.css">
-</head>
-<body>
-    <div class="dashboard_container">
-        <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
-        <a href="request_collection.php" class="dashboard_btn">Request Collection</a>
-        <a href="collection_history.php" class="dashboard_btn">View Collection History</a>
-        <a href="user_view_schedule.php" class="dashboard_btn">View Area-Wise Schedule</a>
-        <a href="user_logout.php" class="dashboard_btn">Logout</a>
-    </div>
-</body>
-</html>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65

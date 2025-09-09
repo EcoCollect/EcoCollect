@@ -34,13 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
         }
     }
 
-<<<<<<< HEAD
     // Fetch schedules for selected area, excluding expired
     $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? AND status != 'Expired' ORDER BY collection_date ASC");
-=======
-    // Fetch schedules for selected area
-    $stmt = $conn->prepare("SELECT collection_date, collection_time, waste_type, remarks, status FROM schedule WHERE area_id = ? ORDER BY collection_date ASC");
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     $stmt->bind_param("i", $selected_area_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -51,11 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
 }
 ?>
 
-<<<<<<< HEAD
 <?php include 'user_navbar.php'; ?>
 
-=======
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,64 +56,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_id'])) {
     <link rel="stylesheet" href="../assets/css/user_styles.css">
 </head>
 <body>
-<<<<<<< HEAD
     <div class="page_content" style="padding-top: 80px;">
         <div class="schedule_container">
-=======
-    <div class="schedule_container">
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
-        <h2>View Area-wise Collection Schedule</h2>
+            <h2>View Area-wise Collection Schedule</h2>
 
-        <form method="POST">
-            <select name="area_id" class="input" required>
-                <option value="">-- Select Area --</option>
-                <?php foreach ($areas as $area): ?>
-                    <option value="<?= htmlspecialchars($area['area_id']) ?>"
-                        <?= ($area['area_id'] == $selected_area_id) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($area['area_name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="green_btn">View Schedule</button>
-        </form>
+            <form method="POST">
+                <select name="area_id" class="input" required>
+                    <option value="">-- Select Area --</option>
+                    <?php foreach ($areas as $area): ?>
+                        <option value="<?= htmlspecialchars($area['area_id']) ?>"
+                            <?= ($area['area_id'] == $selected_area_id) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($area['area_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" class="green_btn">View Schedule</button>
+            </form>
 
-        <?php if ($selected_area_id !== null): ?>
-            <h3>Schedule for <?= htmlspecialchars($selected_area_name) ?></h3>
-            <table class="schedule_table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Waste Type</th>
-                        <th>Remarks</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($schedules) > 0): ?>
-                        <?php foreach ($schedules as $schedule): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($schedule['collection_date']); ?></td>
-                                <td><?= htmlspecialchars($schedule['collection_time']); ?></td>
-                                <td><?= htmlspecialchars($schedule['waste_type']); ?></td>
-                                <td><?= htmlspecialchars($schedule['remarks']); ?></td>
-                                <td><?= htmlspecialchars($schedule['status']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+            <?php if ($selected_area_id !== null): ?>
+                <h3>Schedule for <?= htmlspecialchars($selected_area_name) ?></h3>
+                <table class="schedule_table">
+                    <thead>
                         <tr>
-                            <td colspan="5">No schedules available for this area currently.</td>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Waste Type</th>
+                            <th>Remarks</th>
+                            <th>Status</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php if (count($schedules) > 0): ?>
+                            <?php foreach ($schedules as $schedule): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($schedule['collection_date']); ?></td>
+                                    <td><?= htmlspecialchars($schedule['collection_time']); ?></td>
+                                    <td><?= htmlspecialchars($schedule['waste_type']); ?></td>
+                                    <td><?= htmlspecialchars($schedule['remarks']); ?></td>
+                                    <td><?= htmlspecialchars($schedule['status']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5">No schedules available for this area currently.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
 
-        <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
-<<<<<<< HEAD
+            <a href="user_dashboard.php" class="dashboard_btn">⬅ Back to Dashboard</a>
         </div>
-=======
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
     </div>
 </body>
 </html>

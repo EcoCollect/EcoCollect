@@ -17,186 +17,218 @@ $area_query->execute();
 $area_result = $area_query->get_result();
 $area_id = $area_result->fetch_assoc()['area_id'];
 
-// Daily collection summary
-$daily_query = $conn->prepare("SELECT DATE(created_at) as collection_date, SUM(weight) as total_weight, COUNT(*) as total_requests
-                               FROM request_collection
-                               WHERE area_id=? AND status='Collected'
-                               GROUP BY DATE(created_at)
-                               ORDER BY collection_date DESC
-                               LIMIT 30");
-$daily_query->bind_param("i", $area_id);
-$daily_query->execute();
-$daily_result = $daily_query->get_result();
+// Fetch summary stats for agent's area
+$total_requests_query = $conn->prepare("SELECT COUNT(*) as total FROM request_collection WHERE area_id=?");
+$total_requests_query->bind_param("i", $area_id);
+$total_requests_query->execute();
+$total_requests = $total_requests_query->get_result()->fetch_assoc()['total'];
 
-// Monthly collection summary
-$monthly_query = $conn->prepare("SELECT YEAR(created_at) as year, MONTH(created_at) as month, SUM(weight) as total_weight, COUNT(*) as total_requests
-                                 FROM request_collection
-                                 WHERE area_id=? AND status='Collected'
-                                 GROUP BY YEAR(created_at), MONTH(created_at)
-                                 ORDER BY year DESC, month DESC
-                                 LIMIT 12");
-$monthly_query->bind_param("i", $area_id);
-$monthly_query->execute();
-$monthly_result = $monthly_query->get_result();
+$pending_requests_query = $conn->prepare("SELECT COUNT(*) as pending FROM request_collection WHERE area_id=? AND status='Pending'");
+$pending_requests_query->bind_param("i", $area_id);
+$pending_requests_query->execute();
+$pending_requests = $pending_requests_query->get_result()->fetch_assoc()['pending'];
 
-// Total collected this month
-$current_month = date('Y-m');
-$month_total_query = $conn->prepare("SELECT SUM(weight) as total_weight, COUNT(*) as total_requests
-                                     FROM request_collection
-                                     WHERE area_id=? AND status='Collected' AND DATE_FORMAT(created_at, '%Y-%m') = ?");
-$month_total_query->bind_param("is", $area_id, $current_month);
-$month_total_query->execute();
-$month_total = $month_total_query->get_result()->fetch_assoc();
+$collected_requests_query = $conn->prepare("SELECT COUNT(*) as collected FROM request_collection WHERE area_id=? AND status='Collected'");
+$collected_requests_query->bind_param("i", $area_id);
+$collected_requests_query->execute();
+$collected_requests = $collected_requests_query->get_result()->fetch_assoc()['collected'];
+
+// Fetch all requests in area for detailed summary
+$all_requests_query = $conn->prepare("SELECT name, waste_type, weight, status, created_at FROM request_collection WHERE area_id=? ORDER BY created_at DESC");
+$all_requests_query->bind_param("i", $area_id);
+$all_requests_query->execute();
+$all_requests = $all_requests_query->get_result();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EcoCollect | Collection Summary</title>
+    <title>EcoCollect | Agent Collection Summary</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
     <style>
+        /* ================= GENERAL STYLES ================= */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f0f2f5;
+            background: linear-gradient(to bottom, #e8f5e9, #f0fff0);
+            color: #333;
         }
-        .content {
-            margin-top: 80px;
+        .container {
+            max-width: 1100px;
+            margin: 100px auto 30px auto;
             padding: 20px;
         }
-        .summary-container {
-            max-width: 1200px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+        /* ================= HEADER ================= */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        h2 {
+        .header h1 {
             color: #388e3c;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
+        .header p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        /* ================= STATS ================= */
         .stats {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
             gap: 20px;
             margin-bottom: 30px;
         }
         .stat-box {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            flex: 1;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            width: 250px;
             text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
-        .stat-box h3 {
-            margin: 0;
-            color: #2e7d32;
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        .stat-box h2 {
+            color: #388e3c;
+            margin-bottom: 5px;
+            font-size: 32px;
         }
         .stat-box p {
-            margin: 5px 0 0 0;
             color: #555;
+            margin: 0;
+            font-weight: 500;
+            font-size: 18px;
         }
-        table {
+
+        /* ================= REQUESTS TABLE ================= */
+        .requests-table {
             width: 100%;
             border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             margin-bottom: 30px;
         }
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background: #66bb6a;
+        .requests-table th {
+            background-color: #388e3c;
             color: #fff;
+            padding: 12px;
         }
-        tr:hover {
-            background: #f1f1f1;
+        .requests-table td {
+            padding: 12px;
+            text-align: center;
         }
-        .section {
-            margin-bottom: 40px;
+        .requests-table tr:nth-child(even) {
+            background-color: #f0fff0;
+        }
+        .requests-table tr:hover {
+            background-color: #d9f0d9;
+        }
+
+        .status.pending {
+            background-color: #f6a644;
+            color: #fff;
+            border-radius: 12px;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+        .status.collected {
+            background-color: #388e3c;
+            color: #fff;
+            border-radius: 12px;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media(max-width: 992px){
+            .stats { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
-<?php include('agent_navbar.php'); ?>
+<?php include("agent_navbar.php"); ?>
+<div class="container">
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Collection Summary</h1>
+        <p>Overview of waste collection requests in your assigned area.</p>
+    </div>
 
-<div class="content">
-    <div class="summary-container">
-        <h2>Collection Summary for <?= htmlspecialchars($agent_name) ?></h2>
-
-        <div class="stats">
-            <div class="stat-box">
-                <h3><?php echo number_format($month_total['total_weight'] ?? 0, 2); ?> kg</h3>
-                <p>Total Weight This Month</p>
-            </div>
-            <div class="stat-box">
-                <h3><?php echo $month_total['total_requests'] ?? 0; ?></h3>
-                <p>Total Requests This Month</p>
-            </div>
+    <!-- Stats Section -->
+    <div class="stats">
+        <div class="stat-box">
+            <h2><?= $total_requests ?></h2>
+            <p>Total Requests</p>
         </div>
-
-        <div class="section">
-            <h3>Daily Collection Summary (Last 30 Days)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Total Weight (kg)</th>
-                        <th>Total Requests</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if($daily_result->num_rows > 0): ?>
-                        <?php while($row = $daily_result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['collection_date']); ?></td>
-                                <td><?php echo number_format($row['total_weight'], 2); ?></td>
-                                <td><?php echo $row['total_requests']; ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr><td colspan="3">No collection data found.</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+        <div class="stat-box">
+            <h2><?= $pending_requests ?></h2>
+            <p>Pending</p>
         </div>
-
-        <div class="section">
-            <h3>Monthly Collection Summary</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Month/Year</th>
-                        <th>Total Weight (kg)</th>
-                        <th>Total Requests</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if($monthly_result->num_rows > 0): ?>
-                        <?php while($row = $monthly_result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['month'] . '/' . $row['year']); ?></td>
-                                <td><?php echo number_format($row['total_weight'], 2); ?></td>
-                                <td><?php echo $row['total_requests']; ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr><td colspan="3">No collection data found.</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+        <div class="stat-box">
+            <h2><?= $collected_requests ?></h2>
+            <p>Collected</p>
         </div>
     </div>
-</div>
 
-<?php
-$area_query->close();
-$daily_query->close();
-$monthly_query->close();
-$month_total_query->close();
-$conn->close();
-?>
+    <!-- All Requests Table -->
+    <table class="requests-table">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Waste Type</th>
+                <th>Weight (kg)</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if($all_requests->num_rows > 0): ?>
+                <?php while($row = $all_requests->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['name']) ?></td>
+                        <td><?= htmlspecialchars($row['waste_type']) ?></td>
+                        <td><?= $row['weight'] ?></td>
+                        <td>
+                            <?php if($row['status']=='Pending'): ?>
+                                <span class="status pending">Pending</span>
+                            <?php elseif($row['status']=='Collected'): ?>
+                                <span class="status collected">Collected</span>
+                            <?php else: ?>
+                                <?= htmlspecialchars($row['status']) ?>
+                            <?php endif; ?>
+                        </td>
+                        <td><?= date('Y-m-d', strtotime($row['created_at'])) ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr><td colspan="5">No requests found in your area.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 EcoCollect. All rights reserved.
+    </footer>
+</div>
 </body>
 </html>

@@ -1,39 +1,29 @@
 <?php
 session_start();
-<<<<<<< HEAD
 include('../db_connect/db_connect.php');
 
-=======
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
     exit();
 }
-<<<<<<< HEAD
 
 // Get summary statistics
 $user_count = $conn->query("SELECT COUNT(*) as count FROM user")->fetch_assoc()['count'];
 $agent_count = $conn->query("SELECT COUNT(*) as count FROM agent")->fetch_assoc()['count'];
 $request_count = $conn->query("SELECT COUNT(*) as count FROM request_collection")->fetch_assoc()['count'];
 $schedule_count = $conn->query("SELECT COUNT(*) as count FROM schedule")->fetch_assoc()['count'];
-$user_complaints = $conn->query("SELECT COUNT(*) as count FROM complaints WHERE user_id IS NOT NULL")->fetch_assoc()['count'];
-$agent_complaints = $conn->query("SELECT COUNT(*) as count FROM agent_complaints")->fetch_assoc()['count'];
 
 // Get recent activities
 $recent_requests = $conn->query("SELECT name, waste_type, status, created_at FROM request_collection ORDER BY created_at DESC LIMIT 5");
 $recent_complaints = $conn->query("SELECT c.complaint_text, u.user_name, c.created_at FROM complaints c JOIN user u ON c.user_id = u.user_id ORDER BY c.created_at DESC LIMIT 3");
 $recent_agent_complaints = $conn->query("SELECT ac.complaint_text, a.name, ac.created_at FROM agent_complaints ac JOIN agent a ON ac.user_id = a.id ORDER BY ac.created_at DESC LIMIT 3");
-?>
 
-=======
 $user_name = $_SESSION['admin_name'];
 ?>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <title>EcoCollect | Admin Dashboard</title>
     <style>
         body {
@@ -57,24 +47,25 @@ $user_name = $_SESSION['admin_name'];
         }
         .stat-card {
             background: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             text-align: center;
             transition: transform 0.3s;
         }
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-2px);
         }
         .stat-card h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             color: #388e3c;
-            font-size: 2em;
+            font-size: 1.5em;
         }
         .stat-card p {
             margin: 0;
             color: #666;
             font-weight: bold;
+            font-size: 0.8em;
         }
         .section {
             background: white;
@@ -208,14 +199,6 @@ $user_name = $_SESSION['admin_name'];
                 <h3><?php echo $schedule_count; ?></h3>
                 <p>Active Schedules</p>
             </div>
-            <div class="stat-card">
-                <h3><?php echo $user_complaints; ?></h3>
-                <p>User Complaints/Feedback</p>
-            </div>
-            <div class="stat-card">
-                <h3><?php echo $agent_complaints; ?></h3>
-                <p>Agent Complaints/Feedback</p>
-            </div>
         </div>
 
         <!-- Recent Activities -->
@@ -261,17 +244,5 @@ $user_name = $_SESSION['admin_name'];
         </div>
     </div>
 </div>
-=======
-    <title>EcoCollect | User Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/admin_styles.css">
-</head>
-<body>
-    <div class="dashboard_container">
-        <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
-        <a href="admin_add_schedules.php" class="dashboard_btn">Add Shedule</a>
-        <a href="admin_add_agent.php" class="dashboard_btn">Add Agent</a>
-
-        </div>
->>>>>>> 9cf3b64f7d69f7b3281d8dc73055b26a706c1b65
 </body>
 </html>

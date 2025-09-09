@@ -2,6 +2,7 @@
 $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
 ?>
 <div class="navbar">
+    <span class="role-label">ADMIN</span>
     <a href="admin_dashboard.php" class="<?php echo ($current_page == 'admin_dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
 
     <div class="dropdown">
@@ -85,6 +86,13 @@ $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
 .navbar a.active {
     background-color: #66bb6a;
     color: white;
+}
+
+.role-label {
+    color: yellow;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 16px;
 }
 
 /* Dropdown container */
