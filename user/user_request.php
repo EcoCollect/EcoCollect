@@ -4,8 +4,8 @@ include('../db_connect/db_connect.php');
 // Fetch areas for dropdown
 $area_result = $conn->query("SELECT * FROM area");
 
-// Fetch schedules for dropdown, excluding expired
-$schedule_result = $conn->query("SELECT schedule_id, collection_date, collection_time, waste_type FROM schedule WHERE status != 'Expired'");
+// Fetch schedules for dropdown
+$schedule_result = $conn->query("SELECT schedule_id, collection_date, collection_time, waste_type FROM schedule");
 
 // Fetch waste types for dropdown, excluding 'all' and 'textile' if present
 $waste_result = $conn->query("SELECT * FROM waste_type WHERE waste_name NOT IN ('all', 'textile')");
@@ -22,16 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $remarks = $_POST['remarks'];
 
     $success = true;
-    $stmt = $conn->prepare("INSERT INTO request_collection (name, area_id, waste_type, weight, schedule_id, remarks) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sisdis", $name, $area_id, $waste_type, $weight, $schedule_id, $remarks);
-
     for ($i = 0; $i < count($waste_types); $i++) {
         $waste_type = $waste_types[$i];
         $weight = $weights[$i];
+        $stmt = $conn->prepare("INSERT INTO request_collection (name, area_id, waste_type, weight, schedule_id, remarks) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisdis", $name, $area_id, $waste_type, $weight, $schedule_id, $remarks);
         if (!$stmt->execute()) {
             $success = false;
             break;
         }
+        $stmt->close();
     }
 
     if ($success) {

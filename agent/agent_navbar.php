@@ -7,6 +7,8 @@ $current_page = basename($_SERVER['PHP_SELF']); // Get current file name
     <a href="agent_pickups.php" class="<?php echo ($current_page == 'agent_pickups.php') ? 'active' : ''; ?>">Pickup Schedules</a>
     <a href="agent_view_schedule.php" class="<?php echo ($current_page == 'agent_view_schedule.php') ? 'active' : ''; ?>">View Schedules</a>
     <a href="agent_collection_summary.php" class="<?php echo ($current_page == 'agent_collection_summary.php') ? 'active' : ''; ?>">Collection Summary</a>
+    <a href="agent_sent_notification.php" class="<?php echo ($current_page == 'agent_sent_notification.php') ? 'active' : ''; ?>">Send Notifications</a>
+    <a href="agent_auto_reminder.php" class="<?php echo ($current_page == 'agent_auto_reminder.php') ? 'active' : ''; ?>">Auto Reminders</a>
     <a href="agent_complaint.php" class="<?php echo ($current_page == 'agent_complaint.php') ? 'active' : ''; ?>">Complaints/Feedback</a>
     <a href="agent_profile.php" class="<?php echo ($current_page == 'agent_profile.php') ? 'active' : ''; ?>">My Profile</a>
     <a href="agent_logout.php">Logout</a>

@@ -30,6 +30,12 @@ $recent_requests_query = $conn->prepare("SELECT waste_type, weight, status FROM 
 $recent_requests_query->bind_param("s", $user_name);
 $recent_requests_query->execute();
 $recent_requests = $recent_requests_query->get_result();
+
+// Fetch notifications for the user
+$notifications_query = $conn->prepare("SELECT message, created_at FROM notifications WHERE user_id=? ORDER BY created_at DESC LIMIT 5");
+$notifications_query->bind_param("i", $_SESSION['user_id']);
+$notifications_query->execute();
+$notifications = $notifications_query->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -269,6 +275,31 @@ $recent_requests = $recent_requests_query->get_result();
         </tbody>
     </table>
 
+    <!-- Notifications Section -->
+    <div class="notifications-section">
+        <h3>Recent Notifications</h3>
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if($notifications->num_rows > 0): ?>
+                    <?php while($row = $notifications->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['message']) ?></td>
+                            <td><?= date('Y-m-d H:i', strtotime($row['created_at'])) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr><td colspan="2">No notifications found.</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
     <!-- Eco Tips Section -->
     <div class="tips">
         <h3>Eco Tips</h3>
@@ -297,5 +328,6 @@ $total_requests_query->close();
 $pending_requests_query->close();
 $collected_requests_query->close();
 $recent_requests_query->close();
+$notifications_query->close();
 $conn->close();
 ?>

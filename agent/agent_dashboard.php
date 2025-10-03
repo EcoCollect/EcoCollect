@@ -236,6 +236,8 @@ $recent_requests = $recent_requests_query->get_result();
         <div class="card" onclick="location.href='agent_pickups.php'"><h3>Pickup Schedules</h3></div>
         <div class="card" onclick="location.href='agent_view_schedule.php'"><h3>View Schedules</h3></div>
         <div class="card" onclick="location.href='agent_collection_summary.php'"><h3>Collection Summary</h3></div>
+        <div class="card" onclick="location.href='agent_sent_notification.php'"><h3>Send Notifications</h3></div>
+        <div class="card" onclick="location.href='agent_auto_reminder.php'"><h3>Auto Reminders</h3></div>
         <div class="card" onclick="location.href='agent_complaint.php'"><h3>Complaints/Feedback</h3></div>
         <div class="card" onclick="location.href='agent_profile.php'"><h3>My Profile</h3></div>
         <div class="card" onclick="location.href='agent_logout.php'"><h3>Logout</h3></div>
